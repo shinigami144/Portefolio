@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="./Game.css">
+<style>
+    #ResearchBarre{
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    #bodyProjet{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        margin-top: 0%;
+        margin-left: 15%;
+        margin-right: 15%;  
+        height: 80%;
+    }
+
+    #leftButton{
+        position: relative;
+        right: 5%;
+    }
+
+    #rightButton{
+        position: relative;
+        left: 5%;
+    }
+    #Nav{
+        display: grid;
+        grid-row: 20%;
+        grid-template-columns: 1fr 10fr 1fr;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    img{
+        width: 96%;
+        margin:2%;
+    }
+    p{
+        position: relative;
+        top: -10%;
+        background-color: gray;
+        width: 96%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+</style>
+</head>
+<body>
+    <div id="Nav">
+        <button id="leftButton" onclick="previousPage()">
+            <img src="./Image/flecheD.png">
+        </button>
+        <input type="text" onchange="Recherche()" id="ResearchBarre">
+        <button id="rightButton" onclick="nextPage()">
+            <img src="./Image/flecheG.png">
+        </button>
+    </div>
+    <div id="bodyProjet">
+        <div class="ButtonMenu">
+            <img id="Projet0" onclick="ClickImage('0')">
+            <p id="textProjet0"></p>
+        </div>
+        <div class="ButtonMenu">
+            <img id="Projet1" onclick="ClickImage('1')">
+            <p id="textProjet1"></p>
+        </div>
+        <div class="ButtonMenu">
+            <img id="Projet2" onclick="ClickImage('2')">
+            <p id="textProjet2"></p>
+        </div>
+        <div class="ButtonMenu">
+            <img id="Projet3" onclick="ClickImage('3')">
+            <p id="textProjet3"></p>
+        </div>
+    </div>
+</body>
+</html>
+<script src="./jsonlib.js"></script>
+<script>
+    var Search = "";
+    var numberPage = 0;
+    var numberCase = 4;
+    openJsonFile();
+    
+    function setUp(){
+        var itemSelected = 0;
+        var i = numberPage*numberCase;
+        for(var alpha = 0; alpha< numberCase;alpha++){
+            document.getElementById("Projet"+alpha%numberCase).style.display = "none";
+            document.getElementById("textProjet"+alpha%numberCase).style.display = "none";
+        }
+        var key = Object.keys(jsonData);
+        while(i < key.length && itemSelected < numberCase){
+            if((Search != "" && jsonData[key[i]].mot.includes(Search)) || Search == ""){
+                document.getElementById("Projet"+itemSelected%numberCase).style.display = "block";
+                document.getElementById("textProjet"+itemSelected%numberCase).style.display = "block";
+                document.getElementById("Projet"+itemSelected%numberCase).src = "./Projet/"+jsonData[key[i]].image + "/0";
+                document.getElementById("textProjet"+itemSelected%numberCase).textContent = "";
+                for(var j = 0; j< jsonData[key[i]].mot.length;j++){
+                    document.getElementById("textProjet"+itemSelected%numberCase).textContent += jsonData[key[i]].mot[j] + " ; ";
+                    console.log( jsonData[key[i]].mot[j]);
+                }
+                itemSelected++;
+            }
+            i++;
+        }
+    }
+   
+
+    function nextPage(){
+        if(numberPage < ~~(Object.keys(jsonData).length/numberCase)){
+            numberPage++;
+        }
+        setUp();
+    }
+
+    function previousPage(){
+        if(numberPage > 0){
+            numberPage--;
+        }
+        setUp();
+    }
+
+    function Recherche(){
+        Search = document.getElementById("ResearchBarre").value.toLowerCase();
+        console.log(Search);
+        setUp();
+    }
+    
+    function ClickImage(numeroImage){
+        var projetChoisi = document.getElementById("Projet"+numeroImage).src;
+        for(var i in jsonData){
+            if(projetChoisi.includes(jsonData[i].image)){
+                window.location.href = window.location.href.substring(0,window.location.href.lastIndexOf("/")+1) +"OneProjet?projet="+i;
+            }
+
+        }
+    }
+
+</script>

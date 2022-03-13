@@ -1,0 +1,14 @@
+1 page contenant les projets + systeme de recherche
+	1 pages par projet
+		Page des projet contiendra :
+			Un lien vers le ddl du jeu
+			Image du jeu ( 3 imgage min )
+			Resumé du jeu 
+				Objectif :
+				ROle :
+				Temps pour l'execution
+1 page de garde avec présentation  de soi 
+
+
+Gamification :
+Tetris

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            width: 100%;
+            margin-top: 40%;
+            margin-bottom: 40%;
+            opacity: 0.5;
+        }
+        #gridStructure{
+            display: grid;
+            grid-template-columns: 10% 80% 10%;
+            grid-template-rows: 100%;
+        }
+        img{
+            width: 100%;
+        }
+        p{
+            position: relative;
+            text-align: center;
+            background-color: plum;
+            margin:0%;
+        }
+        #ddlbutton{
+            margin: 0%;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="gridStructure">
+        <button onclick="PreviousImage()">
+            <img src="./Image/flecheD.png">
+        </button>
+        <div id="projetdata">
+            <img id="imageProjet">
+        </div>
+        <button onclick="NextImage()">
+            <img src="./Image/flecheG.png">
+        </button>
+    </div>
+    <a id="ddlbutton"> download the game</a>
+</body>
+</html>
+<script src="./jsonlib.js"></script>
+<script>
+    var chosenprojet = new URLSearchParams(location.search).get("projet");
+    var page = 0;
+    var imageMax = 3;
+    openJsonFile();
+    function setUp(){
+        
+        for(var i = 0; i< jsonData[chosenprojet].description.length;i++){
+            var par = document.createElement("p");
+            par.textContent = jsonData[chosenprojet].description[i];
+            document.getElementById("projetdata").appendChild(par);
+        }
+        document.getElementById("imageProjet").src = "./Projet/"+chosenprojet+"/"+page;
+        document.getElementById("ddlbutton").download = chosenprojet + ".zip";
+    }
+
+    function NextImage(){
+        page = (page+1)%imageMax;  
+    }
+
+    function PreviousImage(){
+        page = (page-1)%imageMax;
+    }
+
+</script>

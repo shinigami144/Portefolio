@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="./CommunCss.css">
+    <link rel="stylesheet" href="./Game.css">
+    <style>
+       img{
+           border-color: black;
+           border :5px solid;
+            background-color: black;
+            opacity: 0.5;
+       }
+       img:hover{
+           border-color: white;
+           cursor: pointer;
+       }
+
+       div{
+           display: block;
+           margin :0%;
+       }
+
+       p{
+           position: absolute;
+           top: 85%;
+           text-align: center;
+           left: 5%;
+           font-size: larger;
+           color: white;
+           margin: 0;
+       }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div>
+        <div class="ButtonMenu">
+            <img src="Image/profil.PNG" class="ObjectCollision" style="height: 100%;" onclick="window.location.href='./APropoMoi'">
+            <p class='centeredDiv' onclick="window.location.href='./APropoMoi'">A propos de <b> MOI </b></p>
+        </div>
+        <div class="ButtonMenu">
+            <img src="Image/profil.PNG" class="ObjectCollision" style="height: 100%;" onclick="window.location.href='./Projet.html'">
+            <p class='centeredDiv' onclick="window.location.href='./Projet.html'">Mes <b>Projets</b></p>
+        </div>
+    </div>
+</body>
+<script src="./scriptJS.js"></script>
+<script>
+    var mycanvas = document.getElementById("canvas");
+    var ctx = mycanvas.getContext("2d");
+    ctx.canvas.width = window.innerWidth;
+    var score = 0;
+    ctx.canvas.height = window.innerHeight;
+    var listeBalle = [new Balle(0,150,150,5,5)]; // opjectif pas atteint ( multiple balle crée plus de probleme)
+    var listeButton = document.getElementsByClassName("ObjectCollision");
+    var IncollisonPastX = false;
+    var IncollisonPastY = false;
+    var positionXBarre = mycanvas.width/2;
+    var positionYBarre = mycanvas.height-50;
+    var barreSizeX = 350;
+    var barreSizeY = 10;
+
+    function drawBall(PositionXballe, PositionYballe,BalleColor) {
+        ctx.beginPath();
+        ctx.arc(PositionXballe, PositionYballe, rayonCercle, 0, Math.PI*rayonCercle);
+        ctx.fillStyle = BalleColor;
+        ctx.fill();
+        ctx.closePath();
+    }
+
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.canvas.width  = window.innerWidth;
+        ctx.canvas.height = window.innerHeight;
+        ctx.beginPath();
+        ctx.font = "15px Comic Sans MS";
+        ctx.fillText(score.toString(),ctx.canvas.width/2,ctx.canvas.height/2);
+        for(var i = 0 ; i< listeButton.length;i++){
+            ctx.fillRect(listeButton[i].x+listeButton[i].clientTop,listeButton[i].y+ listeButton[i].clientLeft,listeButton[i].width+listeButton[i].clientLeft,listeButton[i].height+listeButton[i].clientTop)
+        }
+        ctx.fillStyle = "#0095DD";
+        drawBarre();
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        var listeMultiple = [];
+        var listeDelete = [];
+        
+        for(var i = 0;i<listeBalle.length;i++){
+            var etatballe = changeDir(listeBalle[i], listeBalle.length);
+            if(etatballe == 2){
+                listeMultiple.push(i);
+            }
+            else if (etatballe == 1){
+                listeDelete.push(i);
+            }
+
+            ctx.arc(listeBalle[i].x,listeBalle[i].y,listeBalle[i].rayonCercle,0,Math.PI*listeBalle[i].rayonCercle);
+            ctx.fillStyle = listeBalle[i].color
+            ctx.fill();
+            ctx.closePath();
+            
+            listeBalle[i].x += listeBalle[i].dx;
+            listeBalle[i].y += listeBalle[i].dy;
+        }
+        /*
+        for(var i =0; i< listeMultiple.length;i++){
+            listeBalle.push(new Balle(listeBalle.length,listeBalle[listeMultiple[i]].x,listeBalle[listeMultiple[i]].y,listeBalle[listeMultiple[i]].dx,listeBalle[listeMultiple[i]].dy));
+        }
+        */
+        for(var i= 0; i< listeDelete.length;i++){
+            var j = 0;
+            var found = false;
+            while(j< listeBalle.length && !found){
+                if(listeBalle[j].id == listeDelete[i]){
+                    listeBalle.splice(j,1);
+                }
+                j++;
+            }
+        }
+    }
+
+    function drawBarre(){
+        ctx.fillRect(positionXBarre,positionYBarre,barreSizeX,barreSizeY);
+    }
+
+    function CollisionWithObject(balle, numeroID){
+        var InCollisionX = 0;
+        var InCollisionY = 0;
+        if(balle.y> positionYBarre) {
+            if(balle.y< positionYBarre + barreSizeY){
+                if(balle.x> positionXBarre){
+                    if( balle.x < positionXBarre+ barreSizeX){
+                        InCollisionX = 1;
+                        InCollisionY = 1;
+                        balle.y-=balle.rayonCercle;
+                    }
+                }
+            }
+        }
+        for(var i = 0; i< listeButton.length;i++){
+            if(balle.x> listeButton[i].x){
+                if( balle.x < listeButton[1].x + listeButton[1].width+2*listeButton[1].clientLeft){
+                    InCollisionX = 2;
+                }
+            }
+            if(balle.y> listeButton[i].y) {
+                if(balle.y< listeButton[i].y+listeButton[i].height+2*listeButton[i].clientTop){
+                    InCollisionY = 2;
+                }
+            }
+        }
+        if(InCollisionX && InCollisionY){
+            if(IncollisonPastX){
+                balle.dy=-balle.dy;                 
+            }
+            else if(IncollisonPastY){
+                balle.dx=-balle.dx;
+            }
+            if(InCollisionX == 2 && InCollisionY == 2){
+                increaseScore();
+                return 2;
+            }
+        }
+        IncollisonPastX = InCollisionX;
+        IncollisonPastY = InCollisionY;
+        return 0;
+    }
+
+    function increaseScore(){
+        score++;
+        if(score >10){
+            score+=score%10;
+        }
+    }
+
+    function changeDir(balle, numeroID){
+        var valueBord = 0;
+        valueBord = CollisionWithObject(balle, numeroID);
+        if(balle.x> mycanvas.width - balle.rayonCercle){
+            score++;
+            balle.dx=-balle.dx;
+        }
+        else if( balle.x< balle.rayonCercle){
+            score++;
+            balle.dx=-balle.dx;
+        }
+        if( balle.y < balle.rayonCercle){
+            score++;
+            balle.dy=-balle.dy;
+        }
+        else if(balle.y > mycanvas.height-balle.rayonCercle){
+            valueBord = 1;
+            balle.dy=-balle.dy;
+        }
+        return valueBord;
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if(event.keyCode == "81" || event.keyCode == "90"){
+            if(positionYBarre > 0){
+                positionXBarre -=10;
+            }
+        }
+
+        else if (event.keyCode == "68"){
+            if(positionYBarre+barreSizeY < ctx.canvas.height){
+                positionXBarre +=10;
+            }
+        }
+    })
+bouclegame = setInterval(draw, 20);
+</script>

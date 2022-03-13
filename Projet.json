@@ -1,0 +1,5 @@
+{
+    "GD" : {"image" : "GD","mot":["c#","unity"],"description" :["Ce projet fut realise sur 9 mois seul dans le cadre d'un rendu en fin d'annee","Le jeu met en scene les bases d'un tower defence agrementer d'un systeme de gacha", "en parallele, j'y ai realise une documentation sur le systeme de gatcha au sein du jeu video","Poste Occupe : devellopeur, chef de projet , gamedesigner"]}
+    , "Bachelor" : {"image" : "Bachelor","mot": ["c#","unity"],"description" :["Ce projet fut realise sur 9 mois seul en vue d'une evaluation de fin d'annee", "Cette application a pour but d'introduire l'untilisateur au Hiragana et Katakana","Poste Occupe : devellopeur, UI designer , chef de projet"]}
+    , "Master" :{"image" : "Master","mot":["javaScript","srpgStudio"],"description" :["Projet realise sur 9 mois seul en vue d'une evalutaion en fin d'annee","Ce jeu est un SRPG(Tactical-Rpg) inspirer de Fire Emblem et de Utawarerumono"]}
+}
