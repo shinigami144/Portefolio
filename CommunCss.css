@@ -1,0 +1,56 @@
+#gridBase{
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+   grid-template-rows: 1fr;
+   height: 90vh;
+}
+#gridInformation{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+}
+
+#gridinformationCmp{
+    display: grid;
+    margin: auto;
+    grid-template-rows: auto;
+}
+
+h2,.gridCompetence{
+    background-color: #A6032F;
+}
+
+h2, h1{
+    margin: 0 0 0 0;
+    text-align: center;
+    text-decoration-style: double;
+}
+
+.gridCompetence{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: auto;
+}
+
+button{
+    display: block;
+    size: 100%;
+}
+
+.Couche1{
+    background-color: dodgerblue;
+}
+.Couche2{
+    background-color: coral;
+}
+.Background{
+    background-image: url("Image/backgroundimages.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.icon{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border: solid black 1px;
+}
