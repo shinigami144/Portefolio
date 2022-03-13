@@ -27,8 +27,11 @@
             margin:0%;
         }
         #ddlbutton{
-            margin: 0%;
+            margin-left: 40%;
+            margin-right: 40%;
             opacity: 1;
+            text-align: center;
+            background-color: black;
         }
     </style>
 </head>
@@ -61,7 +64,7 @@
             document.getElementById("projetdata").appendChild(par);
         }
         document.getElementById("imageProjet").src = "./Projet/"+chosenprojet+"/"+page;
-        document.getElementById("ddlbutton").download = chosenprojet + ".zip";
+        document.getElementById("ddlbutton").href = "./Projet/"+chosenprojet+"/"+chosenprojet + ".zip";
     }
 
     function NextImage(){
